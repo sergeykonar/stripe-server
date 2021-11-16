@@ -5,7 +5,7 @@
 
     <!-- model version - always 4.0.0 for Maven 2.x POMs -->
     <modelVersion>4.0.0</modelVersion>
-
+    <packaging>war</packaging>
     <!-- project coordinates - values which uniquely identify this project -->
     <groupId>com.stripe.sample</groupId>
     <artifactId>accept-a-payment</artifactId>
