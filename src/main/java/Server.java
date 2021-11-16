@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -71,9 +72,10 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        port(4242);
-        Dotenv dotenv = Dotenv.load();
 
+        Dotenv dotenv = Dotenv.load();
+        Integer i = Integer.parseInt(Objects.requireNonNull(dotenv.get("$PORT")));
+        port(i);
         Stripe.apiKey = dotenv.get("STRIPE_SECRET_KEY");
 
         // For sample support and debugging, not required for production:
@@ -180,4 +182,6 @@ public class Server {
             return "";
         });
     }
+
+
 }

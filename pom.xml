@@ -93,11 +93,6 @@
                 </executions>
 
                 <configuration>
-                    <appName>vast-gorge-75185</appName>
-
-                    <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Server mvn clean heroku:deploy-war</web>
-                    </processTypes>
                     <descriptorRefs>
                         <!-- This tells Maven to include all dependencies -->
                         <descriptorRef>jar-with-dependencies</descriptorRef>
