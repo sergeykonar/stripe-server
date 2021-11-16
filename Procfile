@@ -1,1 +1,1 @@
-web: java -jar target/sample.jar
+web: java -cp target/sample.jar com.somepackage.SomeClass
