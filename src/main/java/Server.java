@@ -74,7 +74,7 @@ public class Server {
     public static void main(String[] args) {
 
         Dotenv dotenv = Dotenv.load();
-        int i = Integer.parseInt((dotenv.get("$PORT")));
+        int i = Integer.parseInt((dotenv.get("PORT")));
         port(i);
         Stripe.apiKey = dotenv.get("STRIPE_SECRET_KEY");
 
