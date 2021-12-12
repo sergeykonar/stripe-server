@@ -1,24 +1,18 @@
-import java.util.HashMap;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.staticFiles;
-import static spark.Spark.port;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-
 import com.stripe.Stripe;
-import com.stripe.net.ApiResource;
+import com.stripe.exception.SignatureVerificationException;
+import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
-import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.PaymentIntent;
-import com.stripe.exception.*;
 import com.stripe.net.Webhook;
 import com.stripe.param.PaymentIntentCreateParams;
 import io.github.cdimascio.dotenv.Dotenv;
+
+import java.nio.file.Paths;
+import java.util.HashMap;
+
+import static spark.Spark.*;
 
 public class Server {
     private static Gson gson = new Gson();
@@ -107,8 +101,7 @@ public class Server {
                     .addPaymentMethodType(postBody.getPaymentMethodType())
                     .setCurrency(postBody.getCurrency())
                     .setAmount(Long.valueOf(postBody.getAmount()));
-            // If this is for an ACSS payment, we add payment_method_options to create
-            // the Mandate.
+
             System.out.println(postBody.getPaymentMethodType());
             if(postBody.getPaymentMethodType().equals("acss_debit")) {
                 paramsBuilder.setPaymentMethodOptions(
@@ -133,10 +126,8 @@ public class Server {
             PaymentIntentCreateParams createParams = paramsBuilder.build();
 
             try {
-                // Create a PaymentIntent with the order amount and currency
                 PaymentIntent intent = PaymentIntent.create(createParams);
 
-                // Send PaymentIntent details to client
                 return gson.toJson(new CreatePaymentResponse(intent.getClientSecret()));
             } catch(StripeException e) {
                 response.status(400);
